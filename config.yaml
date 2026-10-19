@@ -1,0 +1,110 @@
+# Agendamento diário
+schedule:
+  enabled: true
+  daily_hour: 18
+  daily_minute: 0
+  run_on_startup: false
+
+# Leitura de E-mail (Alertas do LinkedIn, Gupy, Indeed, Glassdoor, etc.)
+email:
+  enabled: true
+  folder: "INBOX"
+  lookback_days: 1
+  unseen_only: true
+  sender_filters:
+    - "linkedin.com"
+    - "gupy.com.br"
+    - "gupy.io"
+    - "indeed.com"
+    - "glassdoor.com"
+    - "programathor.com.br"
+    - "trampos.co"
+  subject_keywords:
+    - "vaga"
+    - "vagas"
+    - "job"
+    - "jobs"
+    - "oportunidade"
+    - "alerta"
+
+# Scraping direto do LinkedIn
+linkedin:
+  enabled: true
+  keywords:
+    - "python"
+    - "fastapi"
+    - "rust"
+  location: "Brazil"
+  max_results: 25
+  post_time: "day" # "day", "week", "month" ou ""
+
+proxy:
+  enabled: false
+  urls: []
+
+rate_limit:
+  requests_per_second: 0.5
+  burst: 1
+
+# Filtros de relevância (suporta regex entre barras ex: "/\\b(pleno|junior|jr)\\b/")
+filters:
+  include_keywords: []
+  exclude_keywords: []
+  exclude_companies: []
+  include_companies: []
+  include_locations: []
+  exclude_locations: []
+  min_description_length: 0
+  max_job_age_days: 7
+
+# Canais de saída
+telegram:
+  enabled: true
+
+smtp_digest:
+  enabled: false
+
+# IA (geração de currículo adaptado sob demanda via /resume ou API)
+ai:
+  enable: true
+  base_url: "https://api.groq.com/openai/v1"
+  model: "openai/gpt-oss-120b"
+  max_tokens: 8192
+  batch_size: 3
+
+# Dados do seu Perfil (única fonte de verdade usada pela IA para adaptar o currículo)
+profile:
+  name: "Vitor Gabriel Souza Pinheiro Paiva"
+  job_title: "Desenvolvedor Backend / Full-Stack (Python, FastAPI, Rust, Vue)"
+  contact:
+    email: "seu_email@exemplo.com"
+    phone: "+55 (XX) 9XXXX-XXXX"
+    linkedin: "linkedin.com/in/seu-perfil"
+    github: "github.com/seu-usuario"
+  summary: "Desenvolvedor com experiência em arquiteturas SaaS Multi-Tenant, APIs assíncronas com Python (FastAPI/Django) e Rust (Axum/Tokio/SQLx), e frontends modernos em Vue 3 / Nuxt 4."
+  skills:
+    - "Python (FastAPI, Django, Asyncio, Pydantic)"
+    - "Rust (Axum, Tokio, SQLx)"
+    - "Vue 3 / Nuxt 4 (TypeScript)"
+    - "PostgreSQL, MySQL, SQL Server, Redis"
+    - "Docker, Git, Linux, Testes Automatizados (Pytest)"
+  languages:
+    - language: "Português"
+      level: "Nativo"
+    - language: "Inglês"
+      level: "Intermediário / Técnico"
+  education:
+    - course: "Bacharelado / Tecnologia em Computação"
+      institution: "Sua Instituição"
+      period: "2022 - Atual"
+  experience:
+    - role: "Desenvolvedor Full-Stack"
+      company: "Projetos & SaaS"
+      period: "2024 - Atual"
+      description:
+        - "Desenvolvimento de sistemas SaaS Multi-Tenant utilizando FastAPI, Rust (Axum) e PostgreSQL."
+        - "Implementação de integrações financeiras, automações com IA/LLMs e pipelines de dados."
+  projects:
+    - name: "TrampoRadar"
+      link: "https://github.com/seu-usuario/trampo-radar"
+      description: "Automação de captura diária de vagas via IMAP + LinkedIn com filtragem e adaptação de currículo em PDF via IA."
