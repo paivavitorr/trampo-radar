@@ -1,57 +1,47 @@
-# TrampoRadar 📬💼
+# TrampoRadar
 
-Automação diária em **Python + FastAPI** que combina:
-1. **Leitura do seu E-mail via IMAP** (alertas de vagas do LinkedIn, Gupy, Indeed, Glassdoor, Programathor, etc.)
-2. **Scraper direto do LinkedIn** (busca ativa com rate-limit, retry e busca de descrição completa)
-3. **Deduplicação e Filtragem Inteligente** (`seen.json` + palavras-chave, regex `/.../i`, empresas, localização e idade máxima da vaga)
-4. **Notificações + Geração de Currículo em PDF com IA (`/resume`)**:
-   - Envia as vagas novas todos os dias para o **Telegram** (e/ou um resumo diário por **E-mail SMTP**).
-   - Responda `/resume` a qualquer vaga no Telegram (ou chame `POST /jobs/{id}/resume` na API) para que a IA (Groq/OpenAI) adapte seu currículo exclusivamente com seus dados reais do `config.yaml` e envie o **PDF A4 pronto**!
+Serviço em Python e FastAPI para captura diária de vagas via alertas de e-mail (IMAP) e busca ativa no LinkedIn, com filtragem de relevância, notificações no Telegram e geração de currículo em PDF adaptado com IA.
 
----
+## Funcionalidades
 
-## Como configurar e rodar
+- Leitura de alertas de vagas na caixa de e-mail via IMAP (LinkedIn, Gupy, Indeed, Glassdoor, Programathor, Trampos).
+- Scraper assíncrono do LinkedIn com rate limiting, retry e coleta da descrição completa da vaga.
+- Controle de duplicados (`seen.json`) e filtros por palavras-chave, expressões regulares, empresas, localização e tempo de publicação.
+- Envio diário das vagas filtradas para o Telegram ou resumo por e-mail (SMTP).
+- Adaptação de currículo via IA (compatível com Groq/OpenAI) e geração de PDF A4 ao responder `/resume` em uma vaga no Telegram ou via API.
 
-### 1. Instalar dependências (via `uv`)
+## Instalação e Uso
+
+1. Instale as dependências:
 ```bash
-cd /home/paiva/projects/thinks/github/repos/trampo-radar
 uv sync
 ```
 
-### 2. Configurar credenciais no `.env`
+2. Configure as variáveis de ambiente:
 ```bash
 cp .env.example .env
 ```
-Edite o `.env`:
-- **`IMAP_USER` / `IMAP_PASSWORD`**: Seu e-mail e uma **Senha de App** (no Gmail: *Conta do Google → Segurança → Verificação em duas etapas → Senhas de app*).
-- **`TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_ID`**: Token do `@BotFather` e o ID numérico do seu chat.
-- **`AI_API_KEY`**: Sua chave da Groq (`https://console.groq.com`) ou OpenAI.
+Preencha no `.env` as credenciais do e-mail (`IMAP_USER`, `IMAP_PASSWORD`), do Telegram (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`) e da IA (`AI_API_KEY`).
 
-### 3. Ajustar filtros e seu currículo base no `config.yaml`
-- Configure o horário diário em `schedule.daily_hour` / `schedule.daily_minute`.
-- Ajuste os termos de busca em `linkedin.keywords` e os filtros em `filters`.
-- Preencha a seção `profile` com suas experiências, projetos, skills e formação (usados pela IA para gerar o PDF adaptado).
+3. Ajuste os filtros de busca e os dados do seu currículo base no arquivo `config.yaml`.
 
-### 4. Executar o servidor FastAPI (Scheduler + Bot + API)
+4. Inicie a aplicação:
 ```bash
 uv run uvicorn trampo_radar.main:app --reload --port 8000
 ```
 
-Acesse a documentação interativa (Swagger UI) em:
-- `http://localhost:8000/docs`
+## Endpoints
 
-### Principais Endpoints da API
-- `GET /health` — Status do IMAP, LinkedIn Scraper, Telegram, IA e horário agendado.
-- `GET /jobs` — Lista as últimas vagas relevantes capturadas.
-- `POST /jobs/scan` — Dispara imediatamente a varredura de E-mail + LinkedIn sob demanda.
-- `POST /jobs/{job_id}/resume` — Gera e faz download do PDF do currículo adaptado para a vaga `{job_id}`.
+- `GET /health` - Status da aplicação e integrações
+- `GET /jobs` - Lista as vagas coletadas no cache
+- `GET /jobs/{job_id}` - Detalhes de uma vaga específica
+- `POST /jobs/scan` - Dispara a varredura imediatamente
+- `POST /jobs/{job_id}/resume` - Gera e retorna o currículo adaptado em PDF para a vaga
 
----
+## Testes e Qualidade
 
-## Qualidade de Código e Testes
-Seguindo os padrões de `contexto-projetos` (`ruff`, `mypy --strict`, `pytest`):
 ```bash
 uv run ruff check .
 uv run mypy src
-uv run pytest --cov=trampo_radar
+uv run pytest
 ```

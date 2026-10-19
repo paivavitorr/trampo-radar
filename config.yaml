@@ -74,7 +74,7 @@ ai:
 
 # Dados do seu Perfil (única fonte de verdade usada pela IA para adaptar o currículo)
 profile:
-  name: "Vitor Gabriel Souza Pinheiro Paiva"
+  name: "Seu Nome Completo"
   job_title: "Desenvolvedor Backend / Full-Stack (Python, FastAPI, Rust, Vue)"
   contact:
     email: "seu_email@exemplo.com"

@@ -302,7 +302,7 @@ def test_telegram_formatting_and_pdf_rendering() -> None:
     job = Job(
         id="555666777",
         title="Engenheiro Python & Rust <Senior>",
-        company="Paiva Tech",
+        company="Acme Tech",
         location="Remoto",
         url="https://www.linkedin.com/jobs/view/555666777",
         description="Vaga excelente com FastAPI e Axum.",
@@ -330,11 +330,11 @@ def test_telegram_formatting_and_pdf_rendering() -> None:
     )
 
     profile = ProfileConfig(
-        name="Vitor Paiva",
+        name="Candidato Exemplo",
         job_title="Software Engineer",
         contact=ContactConfig(
-            email="vitor@example.com",
-            github="github.com/vitor",
+            email="dev@example.com",
+            github="github.com/dev",
         ),
     )
     resume = GeneratedResume(
@@ -351,7 +351,7 @@ def test_telegram_formatting_and_pdf_rendering() -> None:
         projetos=[
             ResumeProject(
                 nome="TrampoRadar",
-                link="https://github.com/vitor/trampo-radar",
+                link="https://github.com/exemplo/trampo-radar",
                 descricao="Automação de vagas.",
             )
         ],
@@ -474,7 +474,7 @@ async def test_pipeline_and_fastapi_endpoints(tmp_path: Path) -> None:
 @pytest.mark.asyncio
 async def test_ai_resume_service_http_mock() -> None:
     ai_cfg = AIConfig(enable=True, api_token="fake-key", model="test-model")
-    profile = ProfileConfig(name="Vitor", skills=["Python"])
+    profile = ProfileConfig(name="Candidato", skills=["Python"])
     service = AIResumeService(ai_cfg=ai_cfg, profile=profile)
     job = Job(id="123", title="Dev Python", description="FastAPI")
 
